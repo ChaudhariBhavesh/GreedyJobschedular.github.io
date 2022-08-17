@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Job Scheduling</title>
+  </head>
+  <body>
+ <!-- Section: Design Block -->
+<section class="background-radial-gradient overflow-hidden">
+  <style>
+    .background-radial-gradient {
+      background-color: hsl(218, 41%, 15%);
+      background-image: radial-gradient(650px circle at 0% 0%,
+          hsl(218, 41%, 35%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsl(218, 41%, 45%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%);
+    }
+
+    #radius-shape-1 {
+      height: 220px;
+      width: 220px;
+      top: -60px;
+      left: -130px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    #radius-shape-2 {
+      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+      bottom: -60px;
+      right: -110px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    .bg-glass {
+      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      backdrop-filter: saturate(200%) blur(25px);
+    }
+    input[type="text"],input[type="number"]::placeholder {
+      text-align: center; 
+    }
+    
+    input[type="text"],input[type="number"] {
+      text-align: center; 
+    }
+  </style>
+
+  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+    <div class="row gx-lg-5 align-items-center mb-5">
+      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+          We Schedule Your Jobs <br />
+          <span style="color: hsl(218, 81%, 75%)">To Get Maximum Profit</span>
+        </h1>
+        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+          
+        </p>
+      </div>
+
+      <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+        <div class="card bg-glass">
+          <div class="card-body px-4 py-5 px-md-5">
+            <form onsubmit="return false">
+                <div class="form-group">
+                    <input type="text" class="form-control w-100" name="name" id="name" placeholder="Job Name">
+                </div>
+              
+                <div class="form-group">
+                    <input type="number" class="form-control" name="deadline" id="deadline" placeholder="Deadline">
+                </div>
+              
+              <!-- <div class="row"> -->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="profit" id="profit" placeholder="Profit">
+                </div>
+
+              <!-- Submit button -->
+              <div class="buttons d-flex mt-4">
+                <button type="submit" onclick="AddRow()" class="btn btn-primary w-50 mr-2">
+                  ADD
+                </button>
+                <button type="submit" onclick="ClearFields()" class="btn btn-danger w-50 ml-2">
+                  CLEAR
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-5 w-100">
+        <table class="table table-striped" id="show">
+          <thead>
+            <tr>
+              <th>Job Name</th>
+              <th>Deadline</th>
+              <th>Profit</th>
+            </tr>
+          </thead>
+        </table>    
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Section: Design Block -->
+
+<script>
+
+    class Job{
+      constructor(name,deadline,profit){
+        this.name = name;
+        this.deadline = deadline;
+        this.profit = profit;
+      }
+    }
+    class Jobs{
+      constructor(){
+        this.jobs = [];
+      }
+
+      addJob(name,deadline,profit){
+        let j = new Job(name,deadline,profit);
+        this.jobs.push(j);
+      }
+
+      get allJobs(){
+        return this.jobs;
+      }
+    }
+
+    // var list1 = [];
+		// var list2 = [];
+		// var list3 = [];
+    var greatest = 0;
+    var jobsList = new Jobs();
+		var n = 1;
+		var x = 0;
+
+		function AddRow(){
+
+			var AddRown = document.getElementById('show');
+			var NewRow = AddRown.insertRow(n);
+      
+			var name = document.getElementById("name").value;
+			var deadline = document.getElementById("deadline").value;
+			var profit = document.getElementById("profit").value;
+      jobsList.addJob(name,deadline,profit);
+
+      if(deadline > greatest){
+        greatest = deadline;
+      }
+
+      console.log(jobsList.allJobs);
+
+			var cel1 = NewRow.insertCell(0);
+			var cel2 = NewRow.insertCell(1);
+			var cel3 = NewRow.insertCell(2);
+
+			cel1.innerHTML = name;
+			cel2.innerHTML = deadline;
+			cel3.innerHTML = profit;
+
+			n++;
+			x++;
+
+      document.getElementById("name").value = "";
+      document.getElementById("deadline").value = "";
+      document.getElementById("profit").value = "";
+		}
+
+  function ClearFields() {
+    document.getElementById("name").value = "";
+    document.getElementById("deadline").value = "";
+    document.getElementById("profit").value = "";
+  }
+
+
+function printJobScheduling(arr, t){
+    // length of array
+    let n = arr.length;
+    console.log(arr[0].profit);
+    // Sort all jobs according to
+    // decreasing order of profit
+    for(let i=0;i<n;i++){
+        for(let j = 0;j<(n - 1 - i);j++){
+            if(arr[j].profit < arr[j + 1].profit){
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+         }
+     }
+ 
+    // To keep track of free time slots
+    let result = [];
+ 
+    // To store result (Sequence of jobs)
+    let succededJobs = new Jobs();
+    let failedJobs = new Jobs();
+    for(let i = 0;i<t+1;i++){
+        succededJobs.addJob('-1',0,0);
+        failedJobs.addJob('-1',0,0);
+        result[i] = false;
+    }
+    var count = 0;
+    var succeded = succededJobs.allJobs;
+    var failed = failedJobs.allJobs;
+    // Iterate through all given jobs
+    for(let i= 0;i<arr.length;i++){
+        // Find a free slot for this job
+        // (Note that we start from the
+        // last possible slot)
+        var flag = false;
+        for(let j = (t - 1, arr[i].deadline - 1);j>=0;j--){
+            // Free slot found
+            if(result[j] == false){
+                result[j] = true;
+                flag = true;
+                succeded[j].name = arr[i].name;
+                succeded[j].deadline = arr[i].deadline;
+                succeded[j].profit = arr[i].profit;
+                break;
+            }
+        }
+
+        if(!flag){
+          failed[count].name = arr[i].name;
+          failed[count].deadline = arr[i].deadline;
+          failed[count].profit = arr[i].profit;
+          count++;
+        }
+    }
+
+ 
+    // print the sequence
+    console.log(succeded);
+    console.log("Failed");
+    console.log(failed);
+}
+
+  function Calculate(){
+    
+    printJobScheduling(jobsList.allJobs,greatest);
+
+  }
+
+
+</script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
